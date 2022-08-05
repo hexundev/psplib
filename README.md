@@ -13,12 +13,21 @@ For audio, OSLib supports WAV, ADPCM and other formats.
 - Setting views and projections
 - Drawing sprites, rects or vertex arrays
 
+## Samples
+
+To do
+
 ## TODO
+### Graphics
 - Texture padding to po2
 - Swizzling
 - Drawing rects
-- Texture formarts other than 8-bit RGBA
+- Texture formarts other than 8-bit RGBA and dithering
 - Look at other other vertex and primitive formats for rendering
+
+### Input
+- Analog press/release 
+- Get d-pad as float values
 
 ## License
 MIT
