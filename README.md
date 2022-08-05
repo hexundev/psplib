@@ -9,7 +9,7 @@ For audio, OSLib supports WAV, ADPCM and other formats.
 
 ## Features
 - Basic input functions
-- Loading PNG textures
+- Loading PNG textures with stb_image
 - Setting views and projections
 - Drawing sprites, rects or vertex arrays
 
