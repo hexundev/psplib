@@ -7,5 +7,12 @@ The code is referenced from the psp sdk, sdk samples and libvita2d.
 
 For audio, OSLib supports WAV, ADPCM and other formats.
 
+## TODO
+- Texture padding to po2
+- Swizzling
+- Drawing rects
+- Texture formarts other than 8-bit RGBA
+- Look at other other vertex and primitive formats for rendering
+
 ## License
 MIT
