@@ -4,6 +4,7 @@ A simple library for PSP.
 
 The goal of this was to learn more about the PSP GU and not have any GPL/LGPL dependencies like gLib2D.
 The code is referenced from the psp sdk, sdk samples, OSLib source and libvita2d.
+Some of the code is things I wrote myself for gLib2DMod.
 
 For audio, OSLib supports WAV, ADPCM and other formats.
 
