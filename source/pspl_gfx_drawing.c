@@ -211,7 +211,12 @@ void pspl_gfx_draw_sprites(pspl_sprite* sprites, unsigned int count, pspl_textur
 	}
 	else
 	{
+		for (i = 0; i < count; ++i)
+		{
+			_setTextureQuad(vertices, i * QUAD_VERTEX_COUNT, sprites, i, texWidth, texHeight);
+		}
 
+		pspl_gfx_draw_vertex_texture(vertices, vertexCount, texture);
 	}
 }
 
