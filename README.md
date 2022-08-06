@@ -15,13 +15,12 @@ For audio, OSLib supports WAV, ADPCM and other formats.
 - Drawing sprites, rects or vertex arrays
 
 ## Samples
-
 To do
 
 ## TODO
 ### Graphics
 - Texture padding to po2
-- Swizzling
+- ~~Swizzling~~ (swizzle_fast from SDK samples)
 - Drawing rects
 - Texture formarts other than 8-bit RGBA and dithering
 - Look at other other vertex and primitive formats for rendering
