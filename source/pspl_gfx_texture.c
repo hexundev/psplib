@@ -1,15 +1,16 @@
 #include "pspl_graphics.h"
+#include "psplib.h"
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#define STBI_ONLY_PNG
-#include "stb_image.h"
+#include "lodepng.h"
+#include "swizzle_fast.h"
 
 static pspl_texture texturePool[PSPL_TEXTURE_POOL_SIZE];
 
-pspl_texture* _get_texture()
+static pspl_texture* _get_texture()
 {
 	for (int i = 0; i < PSPL_TEXTURE_POOL_SIZE; ++i)
 	{
@@ -51,23 +52,33 @@ pspl_texture* pspl_gfx_create_texture(unsigned int width, unsigned int height, p
 
 pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
 {
-	int width, height, channels;
-	unsigned char* img = stbi_load(file, &width, &height, &channels, 0);
+	pspl_log("Loading PNG %s", file);
+
+	unsigned error;
+	unsigned char* img = 0;
+	unsigned width, height;
+
+	error = lodepng_decode32_file(&img, &width, &height, file);
 	if (img == NULL)
 	{
+		pspl_log("Failed to load texture: %s %u", file, error);
 		return NULL;
 	}
+
+	pspl_log("Loaded texture: %d %d", width, height);
 
 	pspl_texture* tex = pspl_gfx_create_texture(width, height, format);
 	if (tex == NULL)
 	{
-		stbi_image_free(img);
+		pspl_log("Failed to create %dx%d texture", width, height);
+		free(img);
 		return NULL;
 	}
 
-	memcpy(tex->data, img, tex->byteSize);
+	_swizzle_fast((u8*)tex->data, (const u8*)img, width * 4, height);
+	tex->isSwizzled = true;
 
-	stbi_image_free(img);
+	free(img);
 	return tex;
 }
 
@@ -82,7 +93,6 @@ void pspl_gfx_free_texture(pspl_texture* texture)
 	memset(texture, 0, sizeof(pspl_texture));
 }
 
-
 void pspl_gfx_free_all_textures()
 {
 	for (int i = 0; i < PSPL_TEXTURE_POOL_SIZE; ++i)
@@ -95,7 +105,6 @@ void pspl_gfx_free_all_textures()
 
 	memset(texturePool, 0, sizeof(texturePool));
 }
-
 
 pspl_texture* pspl_gfx_load_png_buffer(void* fileData, unsigned int size, pspl_pixel_format format)
 {

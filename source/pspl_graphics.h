@@ -133,6 +133,11 @@ extern "C" {
 	void pspl_gfx_draw_rects(pspl_rect* rect, unsigned int count, pspl_color color);
 	void pspl_gfx_draw_sprite(pspl_sprite* sprite, pspl_texture* texture);
 	void pspl_gfx_draw_sprites(pspl_sprite* sprite, unsigned int count, pspl_texture* texture);	
+	void pspl_gfx_sprite_set_texture(pspl_sprite* sprite, pspl_texture* texture);
+
+	/* Simple drawing functions */
+	void pspl_gfx_draw_xy(pspl_texture* texture, float x, float y, pspl_color color);
+	void pspl_gfx_draw_xy_size(pspl_texture* texture, float x, float y, float width, float height, pspl_color color);
 
 	/* Texture loading */
 	pspl_texture* pspl_gfx_create_texture(unsigned int width, unsigned int height, pspl_pixel_format format);

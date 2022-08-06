@@ -9,10 +9,11 @@ const int TEXTURE_VERTEX_FORMAT = GU_TEXTURE_32BITF | GU_COLOR_8888 | GU_VERTEX_
 
 void* currentDisplayBuffer = (void*)0;
 
-#define obj objects[index]
+#define vi (vertexIndex)
+#define obj objects[objIndex]
 #define vxRot(_x,_y) ((_x * cosAngle - _y * sinAngle) + obj.x);
 #define vyRot(_x,_y) ((_x * sinAngle + _y * cosAngle) + obj.y);
-static void _setTextureQuad(pspl_texture_vertex* verts, pspl_sprite* objects, int index, float texWidth, float texHeight)
+static void _setTextureQuad(pspl_texture_vertex* verts, int vertexIndex, pspl_sprite* objects, int objIndex, float texWidth, float texHeight)
 {
 	// UVs
 	const float u1 = obj.texX * texWidth;
@@ -35,54 +36,54 @@ static void _setTextureQuad(pspl_texture_vertex* verts, pspl_sprite* objects, in
 	/* Tri 1 */
 
 	// 0, 0
-	verts[0].color = obj.color;
-	verts[0].u = u1;
-	verts[0].v = v1;
-	verts[0].x = vxRot(x1, y1);
-	verts[0].y = vyRot(x1, y1);
-	verts[0].z = 0.5f;
+	verts[vi + 0].color = obj.color;
+	verts[vi + 0].u = u1;
+	verts[vi + 0].v = v1;
+	verts[vi + 0].x = vxRot(x1, y1);
+	verts[vi + 0].y = vyRot(x1, y1);
+	verts[vi + 0].z = 0.5f;
 
 	// 1, 0
-	verts[1].color = obj.color;
-	verts[1].u = u2;
-	verts[1].v = v1;
-	verts[1].x = vxRot(x2, y1);
-	verts[1].y = vyRot(x2, y1);
-	verts[1].z = 0.5f;
+	verts[vi + 1].color = obj.color;
+	verts[vi + 1].u = u2;
+	verts[vi + 1].v = v1;
+	verts[vi + 1].x = vxRot(x2, y1);
+	verts[vi + 1].y = vyRot(x2, y1);
+	verts[vi + 1].z = 0.5f;
 
 	// 1, 1
-	verts[2].color = obj.color;
-	verts[2].u = u2;
-	verts[2].v = v2;
-	verts[2].x = vxRot(x2, y2);
-	verts[2].y = vyRot(x2, y2);
-	verts[2].z = 0.5f;
+	verts[vi + 2].color = obj.color;
+	verts[vi + 2].u = u2;
+	verts[vi + 2].v = v2;
+	verts[vi + 2].x = vxRot(x2, y2);
+	verts[vi + 2].y = vyRot(x2, y2);
+	verts[vi + 2].z = 0.5f;
 
 	/* Tri 2 */
 
 	// 0, 0
-	verts[3].color = obj.color;
-	verts[3].u = u1;
-	verts[3].v = v1;
-	verts[3].x = vxRot(x1, y1);
-	verts[3].y = vyRot(x1, y1);
-	verts[3].z = 0.5f;
+	verts[vi + 3].color = obj.color;
+	verts[vi + 3].u = u1;
+	verts[vi + 3].v = v1;
+	verts[vi + 3].x = vxRot(x1, y1);
+	verts[vi + 3].y = vyRot(x1, y1);
+	verts[vi + 3].z = 0.5f;
 
 	// 1,1
-	verts[4].color = obj.color;
-	verts[4].u = u2;
-	verts[4].v = v2;
-	verts[4].x = vxRot(x2, y2);
-	verts[4].y = vyRot(x2, y2);
-	verts[4].z = 0.5f;
+	verts[vi + 4].color = obj.color;
+	verts[vi + 4].u = u2;
+	verts[vi + 4].v = v2;
+	verts[vi + 4].x = vxRot(x2, y2);
+	verts[vi + 4].y = vyRot(x2, y2);
+	verts[vi + 4].z = 0.5f;
 
 	// 0,1
-	verts[5].color = obj.color;
-	verts[5].u = u1;
-	verts[5].v = v2;
-	verts[5].x = vxRot(x1, y2);
-	verts[5].y = vyRot(x1, y2);
-	verts[5].z = 0.5f;
+	verts[vi + 5].color = obj.color;
+	verts[vi + 5].u = u1;
+	verts[vi + 5].v = v2;
+	verts[vi + 5].x = vxRot(x1, y2);
+	verts[vi + 5].y = vyRot(x1, y2);
+	verts[vi + 5].z = 0.5f;
 }
 
 void pspl_gfx_clear(pspl_color color)
@@ -132,15 +133,6 @@ void pspl_gfx_draw_vertex_color(pspl_color_vertex* vertices, unsigned int count)
 	{
 		return;
 	}
-
-	unsigned int size = count * sizeof(pspl_color_vertex);
-	void* mem = sceGuGetMemory(size);
-	if (mem == NULL)
-	{
-		return;
-	}
-
-	//memcpy(mem, vertices, size);
 
 	pspl_gfx_set_texture(NULL);
 
@@ -212,7 +204,7 @@ void pspl_gfx_draw_sprites(pspl_sprite* sprites, unsigned int count, pspl_textur
 	{
 		for (i = 0; i < count; ++i)
 		{
-			_setTextureQuad(vertices, sprites, i, texWidth, texHeight);
+			_setTextureQuad(vertices, i * QUAD_VERTEX_COUNT, sprites, i, texWidth, texHeight);
 		}
 
 		pspl_gfx_draw_vertex_texture(vertices, vertexCount, texture);
@@ -221,4 +213,48 @@ void pspl_gfx_draw_sprites(pspl_sprite* sprites, unsigned int count, pspl_textur
 	{
 
 	}
+}
+
+void pspl_gfx_sprite_set_texture(pspl_sprite* sprite, pspl_texture* texture)
+{
+	if (sprite == NULL || texture == NULL)
+	{
+		return;
+	}
+
+	sprite->width = texture->texWidth;
+	sprite->height = texture->texHeight;
+
+	sprite->texX = sprite->texY = 0;
+	sprite->texWidth = texture->texWidth;
+	sprite->texHeight = texture->texHeight;
+}
+
+
+/* Simple drawing functions */
+
+static pspl_sprite drawSprite;
+
+void pspl_gfx_draw_xy(pspl_texture* texture, float x, float y, pspl_color color)
+{
+	pspl_gfx_sprite_set_texture(&drawSprite, texture);
+	drawSprite.x = x;
+	drawSprite.y = y;
+	drawSprite.scaleX = drawSprite.scaleY = 1.0f;
+	drawSprite.color = color;
+
+	pspl_gfx_draw_sprite(&drawSprite, texture);
+}
+
+void pspl_gfx_draw_xy_size(pspl_texture* texture, float x, float y, float width, float height, pspl_color color)
+{
+	pspl_gfx_sprite_set_texture(&drawSprite, texture);
+	drawSprite.x = x;
+	drawSprite.y = y;
+	drawSprite.width = width;
+	drawSprite.height = height;
+	drawSprite.scaleX = drawSprite.scaleY = 1.0f;
+	drawSprite.color = color;
+
+	pspl_gfx_draw_sprite(&drawSprite, texture);
 }

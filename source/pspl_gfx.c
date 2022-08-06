@@ -76,7 +76,7 @@ bool pspl_gfx_init()
 	sceGuSync(0, 0);
 
 	sceDisplayWaitVblankStart();
-	sceGuDisplay(1);
+	sceGuDisplay(GU_TRUE);
 
 	initialized = true;
 	return true;
@@ -133,7 +133,8 @@ void pspl_gfx_set_blend_mode(pspl_blend_mode blendMode)
 
 void pspl_gfx_set_texture(pspl_texture* texture)
 {
-	if (texture == NULL || texture->data == NULL)
+	if (texture == NULL || texture->data == NULL || 
+		texture->texWidth == 0 || texture->texHeight == 0)
 	{
 		sceGuDisable(GU_TEXTURE_2D);
 		return;
