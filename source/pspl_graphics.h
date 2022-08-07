@@ -18,7 +18,6 @@
 #define PSPL_SCRH (272)
 
 #define PSPL_DISPLAY_LIST_SIZE (262144 * 2)
-#define PSPL_AVAIL_VRAM_OFFSET (0x154000) // 0x88000 + 0x88000 + 0x44000
 #define PSPL_TEXTURE_SIZE_MAX (512) // Hardware limit of 512x512
 #define PSPL_TEXTURE_POOL_SIZE (256)
 
@@ -75,10 +74,10 @@ extern "C" {
 
 	typedef struct
 	{
-		int x;
-		int y;
-		int width;
-		int height;
+		short x;
+		short y;
+		short width;
+		short height;
 		float pivotX;
 		float pivotY;
 		float rotation;
@@ -93,15 +92,16 @@ extern "C" {
 
 	typedef struct
 	{
-		float x;
-		float y;
-		float width;
-		float height;
+		short x;
+		short y;
+		short width;
+		short height;
 	} pspl_rect;
 
 	/* Initialization */
-	bool pspl_gfx_init();
+	bool pspl_gfx_init(pspl_pixel_format frameBufferFormat);
 	bool pspl_gfx_quit();
+	unsigned int pspl_gfx_get_vram_offset();
 
 	/* Render states */
 	void pspl_gfx_set_blend_mode(pspl_blend_mode blendMode);

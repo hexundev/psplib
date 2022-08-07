@@ -30,12 +30,12 @@ typedef struct
 
 static bool initialized = false;
 static _pspl_state state;
-
+static unsigned int vramOffset;
 static unsigned int __attribute__((aligned(16))) displayList[PSPL_DISPLAY_LIST_SIZE];
 
 /* Public functions */
 
-bool pspl_gfx_init()
+bool pspl_gfx_init(pspl_pixel_format frameBufferFormat)
 {
 	if (initialized)
 	{
@@ -45,14 +45,17 @@ bool pspl_gfx_init()
 	sceGuInit();
 	sceGuStart(GU_DIRECT, displayList);
 
-	// Currently all the buffers are 16 bit to save memory
-	unsigned int bufferOffset = DISP_BUFFER_WIDTH * PSPL_SCRH * 2;
+	int pixelSize = (frameBufferFormat == PSPL_PF_8888) ? 4 : 2;
+	unsigned int dispBufferSize = DISP_BUFFER_WIDTH * PSPL_SCRH * pixelSize;
+	unsigned int zBufferSize = DISP_BUFFER_WIDTH * PSPL_SCRH * 2;
+
+	vramOffset = (dispBufferSize * 2) + zBufferSize;
 
 	void* frameBuffer = (void*)(0);
-	void* doubleBuffer = (void*)(bufferOffset);
-	void* zBuffer = (void*)(bufferOffset * 2);
+	void* doubleBuffer = (void*)(dispBufferSize);
+	void* zBuffer = (void*)(dispBufferSize * 2);
 
-	sceGuDrawBuffer(GU_PSM_4444, frameBuffer, DISP_BUFFER_WIDTH);
+	sceGuDrawBuffer(frameBufferFormat, frameBuffer, DISP_BUFFER_WIDTH);
 	sceGuDispBuffer(PSPL_SCRW, PSPL_SCRH, doubleBuffer, DISP_BUFFER_WIDTH);
 	sceGuDepthBuffer(zBuffer, DISP_BUFFER_WIDTH);
 
@@ -100,6 +103,12 @@ bool pspl_gfx_quit()
 
 	return true;
 }
+
+unsigned int pspl_gfx_get_vram_offset()
+{
+	return vramOffset;
+}
+
 
 void* pspl_get_display_list()
 {

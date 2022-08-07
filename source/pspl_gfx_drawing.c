@@ -16,18 +16,18 @@ void* currentDisplayBuffer = (void*)0;
 static void _setTextureQuad(pspl_texture_vertex* verts, int vertexIndex, pspl_sprite* objects, int objIndex, float texWidth, float texHeight)
 {
 	// UVs
-	const float u1 = obj.texX * texWidth;
-	const float v1 = obj.texY * texHeight;
-	const float u2 = u1 + obj.texWidth * texWidth;
-	const float v2 = v1 + obj.texHeight * texHeight;
+	const float u1 = (float)obj.texX * texWidth;
+	const float v1 = (float)obj.texY * texHeight;
+	const float u2 = u1 + (float)obj.texWidth * texWidth;
+	const float v2 = v1 + (float)obj.texHeight * texHeight;
 
 	// Coordinates
-	const float cx = obj.pivotX * obj.width;
-	const float cy = obj.pivotY * obj.height;
+	const float cx = obj.pivotX * (float)obj.width;
+	const float cy = obj.pivotY * (float)obj.height;
 	const float x1 = -cx * obj.scaleX;
 	const float y1 = -cy * obj.scaleY;
-	const float x2 = (obj.width - cx) * obj.scaleX;
-	const float y2 = (obj.height - cy) * obj.scaleY;
+	const float x2 = ((float)obj.width - cx) * obj.scaleX;
+	const float y2 = ((float)obj.height - cy) * obj.scaleY;
 
 	float cosAngle;
 	float sinAngle;
