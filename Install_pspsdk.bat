@@ -27,6 +27,7 @@ rem pause
 mkdir %INC%
 
 cd source
+copy pspl_debug.h %INC%
 copy pspl_graphics.h %INC%
 copy pspl_input.h %INC%
 copy psplib.h %INC%
