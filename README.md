@@ -22,6 +22,7 @@ To do
 ## TODO
 ### Graphics
 - Use VPU
+- DXT textures
 - Texture padding to po2 at load
 - Textures movable to VRAM and VRAM management
 - ~~Swizzling~~ (used swizzle_fast from SDK samples)
