@@ -14,7 +14,7 @@
 
 #include <stdbool.h>
 
-#define PSPL_ANALOG_DEFAULT_DEADZONE 5
+#define PSPL_ANALOG_DEFAULT_DEADZONE 20
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,8 +51,9 @@ extern "C" {
     bool pspl_btn_pressed(pspl_btn button);
     bool pspl_btn_released(pspl_btn button);
     int  pspl_get_hold_duration(pspl_btn button);
+    void pspl_dpad_get_float(float* x, float* y); // values: -1 to 1, neutral is 0
 
-    void pspl_analog_set_deadzone(int deadzone);
+    void pspl_analog_set_deadzone(int deadzone); // 0-127
     void pspl_analog_get(int* x, int* y); // values: 0-255, neutral is ~127
     void pspl_analog_get_float(float* x, float* y); // values: -1 to 1, neutral is ~0
 

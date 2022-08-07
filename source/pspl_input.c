@@ -162,6 +162,19 @@ int pspl_get_hold_duration(pspl_btn button)
 	return holdDuration[button];
 }
 
+#define btn_down(b) ((state.Buttons & b)?1:0)
+
+void pspl_dpad_get_float(float* x, float* y)
+{
+	if (x == NULL || y == NULL)
+	{
+		return;
+	}
+
+	*x = (float)(btn_down(PSP_CTRL_RIGHT) - btn_down(PSP_CTRL_LEFT));
+	*y = (float)(btn_down(PSP_CTRL_DOWN) - btn_down(PSP_CTRL_UP));
+}
+
 void pspl_analog_set_deadzone(int deadzone)
 {
 	if (deadzone > 0)
