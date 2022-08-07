@@ -29,6 +29,7 @@ extern "C" {
 #endif
 
 	typedef unsigned int pspl_color;
+	typedef unsigned short pspl_color16;
 
 	typedef enum
 	{
@@ -130,7 +131,7 @@ extern "C" {
 	void pspl_gfx_draw_vertex_color(pspl_color_vertex* vertices, unsigned int count);
 	void pspl_gfx_draw_vertex_texture(pspl_texture_vertex* vertices, unsigned int count, pspl_texture* texture);
 	void pspl_gfx_draw_rect(pspl_rect* rect, pspl_color color);
-	void pspl_gfx_draw_rects(pspl_rect* rect, unsigned int count, pspl_color color);
+	void pspl_gfx_draw_rects(pspl_rect* rects, unsigned int count, pspl_color color);
 	void pspl_gfx_draw_sprite(pspl_sprite* sprite, pspl_texture* texture);
 	void pspl_gfx_draw_sprites(pspl_sprite* sprite, unsigned int count, pspl_texture* texture);	
 	void pspl_gfx_sprite_set_texture(pspl_sprite* sprite, pspl_texture* texture);

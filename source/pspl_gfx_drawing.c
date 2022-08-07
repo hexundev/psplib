@@ -146,12 +146,38 @@ void pspl_gfx_draw_vertex_color(pspl_color_vertex* vertices, unsigned int count)
 
 void pspl_gfx_draw_rect(pspl_rect* rect, pspl_color color)
 {
+	if (rect == NULL || color == 0)
+	{
+		return;
+	}
 
+	// TODO later
+
+	pspl_gfx_draw_xy_size(
+		NULL,
+		rect->x, rect->y,
+		rect->width, rect->height,
+		color);
 }
 
-void pspl_gfx_draw_rects(pspl_rect* rect, unsigned int count, pspl_color color)
+void pspl_gfx_draw_rects(pspl_rect* rects, unsigned int count, pspl_color color)
 {
+	if (rects == NULL || count == 0 || color == 0)
+	{
+		return;
+	}
 
+	// TODO later
+
+	int i;
+	for (i = 0; i < count; ++i)
+	{
+		pspl_gfx_draw_xy_size(
+			NULL,
+			rects[i].x, rects[i].y,
+			rects[i].width, rects[i].height,
+			color);
+	}
 }
 
 void pspl_gfx_draw_vertex_texture(pspl_texture_vertex* vertices, unsigned int count, pspl_texture* texture)
@@ -211,6 +237,7 @@ void pspl_gfx_draw_sprites(pspl_sprite* sprites, unsigned int count, pspl_textur
 	}
 	else
 	{
+		// TODO later, for now draw with texture vertex
 		for (i = 0; i < count; ++i)
 		{
 			_setTextureQuad(vertices, i * QUAD_VERTEX_COUNT, sprites, i, texWidth, texHeight);
@@ -242,6 +269,11 @@ static pspl_sprite drawSprite;
 
 void pspl_gfx_draw_xy(pspl_texture* texture, float x, float y, pspl_color color)
 {
+	if (color == 0)
+	{
+		return;
+	}
+
 	pspl_gfx_sprite_set_texture(&drawSprite, texture);
 	drawSprite.x = x;
 	drawSprite.y = y;
@@ -253,6 +285,11 @@ void pspl_gfx_draw_xy(pspl_texture* texture, float x, float y, pspl_color color)
 
 void pspl_gfx_draw_xy_size(pspl_texture* texture, float x, float y, float width, float height, pspl_color color)
 {
+	if (color == 0)
+	{
+		return;
+	}
+
 	pspl_gfx_sprite_set_texture(&drawSprite, texture);
 	drawSprite.x = x;
 	drawSprite.y = y;

@@ -45,12 +45,8 @@ bool pspl_gfx_init()
 	sceGuInit();
 	sceGuStart(GU_DIRECT, displayList);
 
-	// Set display buffer, double buffer and depth buffer in static VRAM regions
-	// 0x88000 = 512 * 272 * 4bpp
-	// 0x110000 = disp buffer size * 2
-	// Depth buffer is same dimensions but 2bpp
-
-	unsigned int bufferOffset = DISP_BUFFER_WIDTH*PSPL_SCRH*2;
+	// Currently all the buffers are 16 bit to save memory
+	unsigned int bufferOffset = DISP_BUFFER_WIDTH * PSPL_SCRH * 2;
 
 	void* frameBuffer = (void*)(0);
 	void* doubleBuffer = (void*)(bufferOffset);
@@ -62,7 +58,7 @@ bool pspl_gfx_init()
 
 	sceGuOffset(2048 - (PSPL_SCRW / 2), 2048 - (PSPL_SCRH / 2));
 	sceGuViewport(2048, 2048, PSPL_SCRW, PSPL_SCRH);
-	
+
 	sceGuClearDepth(0);
 	sceGuDepthRange(65535, 0);
 	sceGuColor(0xFFFFFFFF);
@@ -141,7 +137,7 @@ void pspl_gfx_set_blend_mode(pspl_blend_mode blendMode)
 
 void pspl_gfx_set_texture(pspl_texture* texture)
 {
-	if (texture == NULL || texture->data == NULL || 
+	if (texture == NULL || texture->data == NULL ||
 		texture->texWidth == 0 || texture->texHeight == 0)
 	{
 		sceGuDisable(GU_TEXTURE_2D);
