@@ -33,8 +33,8 @@ extern "C" {
 	typedef enum
 	{
 		PSPL_PF_8888 = GU_PSM_8888,
-		PSPL_PF_FORMAT_4444 = GU_PSM_4444,
-		PSPL_PF_FORMAT_5551 = GU_PSM_5551,
+		PSPL_PF_4444 = GU_PSM_4444,
+		PSPL_PF_5551 = GU_PSM_5551,
 	} pspl_pixel_format;
 
 	typedef enum

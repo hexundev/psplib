@@ -4,9 +4,9 @@
 #include "pspl_input.h"
 #include "pspl_graphics.h"
 
+#include <stdint.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #ifdef  PSPLIB_DEBUG
 static void pspl_log(const char* format, ...)

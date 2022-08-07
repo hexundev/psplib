@@ -49,19 +49,27 @@ bool pspl_gfx_init()
 	// 0x88000 = 512 * 272 * 4bpp
 	// 0x110000 = disp buffer size * 2
 	// Depth buffer is same dimensions but 2bpp
-	sceGuDrawBuffer(GU_PSM_8888, (void*)0, DISP_BUFFER_WIDTH);
-	sceGuDispBuffer(PSPL_SCRW, PSPL_SCRH, (void*)0x88000, DISP_BUFFER_WIDTH);
-	sceGuDepthBuffer((void*)0x110000, DISP_BUFFER_WIDTH);
+
+	unsigned int bufferOffset = DISP_BUFFER_WIDTH*PSPL_SCRH*2;
+
+	void* frameBuffer = (void*)(0);
+	void* doubleBuffer = (void*)(bufferOffset);
+	void* zBuffer = (void*)(bufferOffset * 2);
+
+	sceGuDrawBuffer(GU_PSM_4444, frameBuffer, DISP_BUFFER_WIDTH);
+	sceGuDispBuffer(PSPL_SCRW, PSPL_SCRH, doubleBuffer, DISP_BUFFER_WIDTH);
+	sceGuDepthBuffer(zBuffer, DISP_BUFFER_WIDTH);
 
 	sceGuOffset(2048 - (PSPL_SCRW / 2), 2048 - (PSPL_SCRH / 2));
 	sceGuViewport(2048, 2048, PSPL_SCRW, PSPL_SCRH);
-
+	
 	sceGuClearDepth(0);
 	sceGuDepthRange(65535, 0);
 	sceGuColor(0xFFFFFFFF);
 	sceGuAmbientColor(0xFFFFFFFF);
 	sceGuShadeModel(GU_SMOOTH);
 	sceGuEnable(GU_SCISSOR_TEST);
+	sceGuEnable(GU_DITHER);
 	sceGuTexFunc(GU_TFX_MODULATE, GU_TCC_RGBA);
 	sceGuTexOffset(0.0f, 0.0f);
 	sceGuTexScale(1.0f, 1.0f);
