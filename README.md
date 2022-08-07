@@ -26,7 +26,7 @@ To do
 - ~~Swizzling~~ (used swizzle_fast from SDK samples)
 - ~~Texture formarts other than 8-bit RGBA and dithering~~ Defaulting to 16bit for everything
 - Look at other other vertex and primitive formats for rendering
-- Drawing untextured rects
+- Drawing untextured rects with color_vertex
 - More drawing functions
 
 ### Input
