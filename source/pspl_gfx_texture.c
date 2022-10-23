@@ -104,6 +104,8 @@ pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
 	unsigned char* img = 0;
 	unsigned width, height;
 	error = lodepng_decode32_file(&img, &width, &height, file);
+	sceKernelDcacheWritebackAll();
+	
 	if (img == NULL)
 	{
 		pspl_log("Failed to load texture: %s %u", file, error);
@@ -134,6 +136,8 @@ pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
 		_rgba32_to_rgba16(tempBuffer, img, width, height);
 		_swizzle_fast((u8*)tex->data, (const u8*)tempBuffer, width * 2, height);
 	}
+	
+	sceKernelDcacheWritebackAll();
 
 	free(img);
 	return tex;
