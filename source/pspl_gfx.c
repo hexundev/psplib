@@ -72,6 +72,7 @@ bool pspl_gfx_init(pspl_pixel_format frameBufferFormat)
 	sceGuTexFunc(GU_TFX_MODULATE, GU_TCC_RGBA);
 	sceGuTexOffset(0.0f, 0.0f);
 	sceGuTexScale(1.0f, 1.0f);
+	sceGuAlphaFunc(GU_GREATER, 20, 0xFF);
 
 	sceGuDepthFunc(GU_GEQUAL);
 	sceGuDepthMask(GU_FALSE);
