@@ -73,6 +73,9 @@ bool pspl_gfx_init(pspl_pixel_format frameBufferFormat)
 	sceGuTexOffset(0.0f, 0.0f);
 	sceGuTexScale(1.0f, 1.0f);
 
+	sceGuDepthFunc(GU_GEQUAL);
+	sceGuDepthMask(GU_FALSE);
+
 	pspl_gfx_set_texture(NULL);
 	pspl_gfx_set_blend_mode(PSPL_BLEND_ALPHA);
 	pspl_gfx_set_texture_wrap(false);

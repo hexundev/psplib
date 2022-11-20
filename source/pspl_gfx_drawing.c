@@ -89,7 +89,7 @@ static void _setTextureQuad(pspl_texture_vertex* verts, int vertexIndex, pspl_sp
 void pspl_gfx_clear(pspl_color color)
 {
 	sceGuClearColor(color);
-	sceGuClear(GU_COLOR_BUFFER_BIT);
+	sceGuClear(GU_COLOR_BUFFER_BIT  | GU_DEPTH_BUFFER_BIT);
 }
 
 void pspl_gfx_start_drawing(pspl_texture* target)
