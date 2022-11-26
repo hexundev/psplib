@@ -52,6 +52,7 @@ extern "C" {
 		unsigned int imgHeight;
 		unsigned int texWidth; // po2 size
 		unsigned int texHeight; 
+		unsigned char bpp;
 		unsigned int byteSize;
 		bool isSwizzled;
 		void* data;
