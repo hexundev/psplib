@@ -145,8 +145,9 @@ extern "C" {
 	pspl_texture* pspl_gfx_create_texture(unsigned int width, unsigned int height, pspl_pixel_format format);
 	void pspl_gfx_free_texture(pspl_texture* texture);
 	void pspl_gfx_free_all_textures();
+	pspl_texture* pspl_gfx_load_rgba(void* rgbaData, unsigned int width, unsigned int height, pspl_pixel_format format);
 	pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format);
-	pspl_texture* pspl_gfx_load_png_buffer(void* fileData, unsigned int size, pspl_pixel_format format);
+	pspl_texture* pspl_gfx_load_png_buffer(void* fileData, unsigned int size, pspl_pixel_format format);	
 	pspl_texture* pspl_gfx_load_swizzled_file(const char* file, pspl_pixel_format format);
 	pspl_texture* pspl_gfx_load_swizzled_buffer(void* fileData, unsigned int size, pspl_pixel_format format);
 

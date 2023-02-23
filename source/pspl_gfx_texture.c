@@ -109,31 +109,17 @@ pspl_texture* pspl_gfx_create_texture(unsigned int width, unsigned int height, p
 	return tex;
 }
 
-pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
+pspl_texture* pspl_gfx_load_rgba(void* rgbaData, unsigned int width, unsigned int height, pspl_pixel_format format)
 {
-	pspl_log("Loading PNG %s", file);
-
-	// Load PNG file
-	unsigned error;
-	unsigned char* img = 0;
-	unsigned width, height;
-	error = lodepng_decode32_file(&img, &width, &height, file);
-	sceKernelDcacheWritebackAll();
-
-	if (img == NULL)
+	if (rgbaData == NULL || width == 0 || height == 0)
 	{
-		pspl_log("Failed to load texture: %s %u", file, error);
 		return NULL;
 	}
 
-	pspl_log("Loaded texture: %dx%d", width, height);
-
-	// Create texture
 	pspl_texture* tex = pspl_gfx_create_texture(width, height, format);
 	if (tex == NULL)
 	{
 		pspl_log("Failed to create %dx%d texture", width, height);
-		free(img);
 		return NULL;
 	}
 
@@ -163,17 +149,73 @@ pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
 		u16* tempBuffer = (u16*)malloc(width * height * 2);
 		u32 imageSize = width * height * 4;
 
-		_convert_color(tempBuffer, img, imageSize, convertFunc);
+		_convert_color(tempBuffer, rgbaData, imageSize, convertFunc);
 		_swizzle_fast((u8*)tex->data, (const u8*)tempBuffer, width * tex->bpp, height);
-		
+
 		free(tempBuffer);
 	}
 	else
 	{
-		_swizzle_fast((u8*)tex->data, (const u8*)img, width * tex->bpp, height);
-	}	
+		_swizzle_fast((u8*)tex->data, (const u8*)rgbaData, width * tex->bpp, height);
+	}
 
 	sceKernelDcacheWritebackAll();
+
+	return tex;
+}
+
+pspl_texture* pspl_gfx_load_png_file(const char* file, pspl_pixel_format format)
+{
+	pspl_log("Loading PNG %s", file);
+
+	// Load PNG file
+	unsigned error;
+	unsigned char* img = 0;
+	unsigned width, height;
+	error = lodepng_decode32_file(&img, &width, &height, file);
+	sceKernelDcacheWritebackAll();
+
+	if (img == NULL)
+	{
+		pspl_log("Failed to decode PNG file: %s %u", file, error);
+		return NULL;
+	}
+
+	pspl_log("Loaded texture: %dx%d", width, height);
+
+	// Create texture
+	pspl_texture* tex = pspl_gfx_load_rgba(img, width, height, format);
+
+	free(img);
+	return tex;
+}
+
+pspl_texture* pspl_gfx_load_png_buffer(void* fileData, unsigned int size, pspl_pixel_format format)
+{
+	if (fileData == NULL || size == 0)
+	{
+		return NULL;
+	}
+
+	pspl_log("Loading PNG buffer");
+
+	// Load PNG
+	unsigned error;
+	unsigned char* img = 0;
+	unsigned width, height;
+	error = lodepng_decode32(&img, &width, &height, (const unsigned char*)fileData, (size_t)size);
+	sceKernelDcacheWritebackAll();
+
+	if (img == NULL)
+	{
+		pspl_log("Failed to decode PNG buffer: %u", error);
+		return NULL;
+	}
+
+	pspl_log("Loaded texture: %dx%d", width, height);
+
+	// Create texture
+	pspl_texture* tex = pspl_gfx_load_rgba(img, width, height, format);
 
 	free(img);
 	return tex;
@@ -201,9 +243,4 @@ void pspl_gfx_free_all_textures()
 	}
 
 	memset(texturePool, 0, sizeof(texturePool));
-}
-
-pspl_texture* pspl_gfx_load_png_buffer(void* fileData, unsigned int size, pspl_pixel_format format)
-{
-	return NULL;
 }
