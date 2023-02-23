@@ -13,6 +13,7 @@ This was tested with the Minimalist PSP SDK 0.15.0.
 ## Features
 - Basic input functions
 - Loading PNG textures with lodepng
+- 16 and 32 bit textures
 - Setting views and projections
 - Drawing sprites, rects or vertex arrays
 
@@ -26,7 +27,7 @@ To do
 - Texture padding to po2 at load
 - Textures movable to VRAM and VRAM management
 - ~~Swizzling~~ (used swizzle_fast from SDK samples)
-- ~~Texture formarts other than 8-bit RGBA and dithering~~ Defaulting to 16bit for everything
+- ~~Texture formarts other than 8-bit RGBA and dithering~~ 
 - Look at other other vertex and primitive formats for rendering
 - Drawing untextured rects with color_vertex
 - More drawing functions
